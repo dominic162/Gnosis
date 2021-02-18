@@ -1,1 +1,1 @@
-#Gnosis-A website to increase knowledge in every domain
+### Gnosis-A website to increase knowledge in every domain
