@@ -3,7 +3,7 @@ from taggit.managers import TaggableManager
 
 # Create your models here.
 
-class user(models.Model):
+class appuser(models.Model):
     name=models.CharField(max_length=15)
     email=models.EmailField()
     slug=models.SlugField()
