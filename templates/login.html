@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>
+        Login
+    </title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+                <label for="username">Username</label>
+                <div class="form-text">Username length must be 4-15 characters.</div>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <label for="password">Password</label>
+                <div class="form-text">Password length must be 8-15 characters.</div>
+            </div>
+            <button type="submit" class="btn btn-success">Login</button> 
+        </form>
+    </div>
+</div>
+
+{% endblock %}
