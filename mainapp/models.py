@@ -9,7 +9,7 @@ class appuser(models.Model):
     email=models.EmailField()
     slug=models.SlugField()
     userimage=models.ImageField(upload_to="userimage/",default='default_profile.jpg')
-    interest=TaggableManager()
+    tags=TaggableManager()
 
     def __str__(self):
         return self.name

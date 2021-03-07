@@ -12,8 +12,16 @@
     <div>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
-
+            {% for field in form %}
+            <div class="form-floating mb-3">
+                <input type="{{ field.field.widget.input_type }}" class="form-control" id="floating input" name="{{field.name}}" placeholder="{{field.name}}" >
+                <label for="floatinginput" >{{field.label}}</label>
+                {% if field.help_text %}
+                <div class="form-text">{{field.help_text}}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Signup</button> 
         </form>
     </div>
 </div>
