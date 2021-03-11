@@ -3,4 +3,8 @@ from mainapp import models
 # Register your models here.
 
 admin.site.register([
-    models.appuser,])
+    models.appuser,
+    models.doubts,
+    models.solution,
+    models.book
+    ])

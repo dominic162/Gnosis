@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .forms import loginform , signupform
+from .forms import loginform , signupform , askdoubt
+from .models import doubts, appuser, solution
 from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -42,13 +44,13 @@ def auth_signup(request):
     }
 
     if request.method == "POST":
-        data=request.POST.copy()
-        data['slug']=slugify(data['username'])
-        form=signupform(data)
+        request.POST = request.POST.copy()
+        request.POST['slug'] = slugify(request.POST['username'])
+        form=signupform(request.POST,request.FILES)
         if form.is_valid():
-            username=data['username']
-            password=data['password']
-            cnfpassword=data['confirm_password']
+            username = request.POST['username']
+            password = request.POST['password']
+            cnfpassword = request.POST['confirm_password']
             if password == cnfpassword:
                 try:
                     user=User.objects.get(username = username)
@@ -70,3 +72,44 @@ def auth_signup(request):
 def auth_logout(request):
     logout(request)
     return HttpResponseRedirect("/")
+
+def allques(request):
+    objects = doubts.objects.all()
+    context={
+        'objects':objects,
+    }
+    return render(request, 'allques.html', context)
+
+
+@login_required(login_url='/login')
+def ask(request):
+    context={
+        'form' : askdoubt()
+    }
+
+    if request.method == "POST":
+        request.POST = request.POST.copy()
+        request.POST['author'] = appuser.objects.get( username = request.user.username )
+        form = askdoubt( request.POST )
+        if form.is_valid() :
+            form.save()
+            return HttpResponseRedirect("/")
+        else:
+            context['error'] = 'error'
+
+    return render(request, 'ask.html', context)
+
+def show_doubt(request , pk ):
+    doubt=doubts.objects.get(pk = pk)
+    context={
+        'object' : doubt,
+    }
+    if request.method == "POST":
+        request.POST = request.POST.copy()
+        request.POST['question'] = doubt
+        request.POST['author'] = appuser.objects.get( username = request.user.username )
+        obj = solution(answer = request.POST['answer'],
+                       question = request.POST['question'],
+                       author = request.POST['author'] )
+        obj.save()
+    return render(request, 'showdoubt.html', context)
