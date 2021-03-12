@@ -1,11 +1,11 @@
 from django import forms
 from mainapp import models
 
-class loginform(forms.Form):
+class login_form(forms.Form):
     username = forms.CharField(min_length=4,max_length=15)
     password = forms.CharField(widget=forms.PasswordInput,min_length=8,max_length=16)
 
-class signupform(forms.ModelForm):
+class signup_form(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, help_text="Password length must be between 8-16")
     confirm_password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
@@ -22,10 +22,18 @@ class signupform(forms.ModelForm):
             'password' : 'Username length must be 8-16.',
         }
 
-class askdoubt(forms.ModelForm):
+class ask_doubt(forms.ModelForm):
     class Meta:
         model = models.doubts
         fields = '__all__'
         widgets = {
             'author' : forms.HiddenInput(),
         }
+
+class new_book( forms.ModelForm ):
+    class Meta:
+        model = models.book
+        fields = '__all__'
+        widgets = {
+            'uploaded_by' : forms.HiddenInput(),
+        } 

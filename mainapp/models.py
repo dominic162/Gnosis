@@ -34,7 +34,7 @@ class book(models.Model):
     name = models.CharField(max_length = 200)
     author = models.CharField( max_length = 100 )
     uploaded_by = models.ForeignKey( 'appuser' , on_delete = models.CASCADE)
-    thumbnail = models.ImageField(upload_to = "thumbnail/" , default = 'default_thumbnil.jpg')
+    thumbnail = models.ImageField(upload_to = "thumbnail/" , default = 'default_thumbnail.jpg')
     bookpdf = models.FileField(upload_to= "book/")
     no_of_pages = models.IntegerField()
 
