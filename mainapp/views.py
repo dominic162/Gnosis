@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .forms import login_form , signup_form , ask_doubt , new_book
@@ -29,7 +29,7 @@ def auth_login(request):
                 login(request,user)
                 return HttpResponseRedirect("/")
             else:
-                context['error'] = "No user exist"
+                context['error'] = "Invalid username or password."
         else:
             context['error'] = "Username length must be 4-15 characters. Password length must be 8-16 characters"
 
@@ -136,3 +136,11 @@ def all_books(request):
         'object' : book.objects.all(),
     }
     return render(request, 'all_books.html', context)
+
+def book_view( request , pk ):
+    context = {
+        'object' : book.objects.get(pk = pk),
+    }
+    return render(request, 'book_view.html', context)
+
+

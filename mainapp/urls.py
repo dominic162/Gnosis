@@ -1,5 +1,5 @@
 from django.urls import path
-from mainapp import views 
+from mainapp import views
 from django.conf import settings 
 from django.conf.urls.static import static
 
@@ -13,6 +13,7 @@ urlpatterns = [
     path('doubt/<int:pk>',  views.show_doubt, name="show_doubt"),
     path('add-book',    views.add_book, name="add_book"),
     path('all-books',   views.all_books,    name="all_books"),
+    path('book/<int:pk>',   views.book_view,    name="book_view"),
 
 ]   
 
