@@ -37,6 +37,6 @@ class book(models.Model):
     thumbnail = models.ImageField(upload_to = "thumbnail/" , default = 'default_thumbnail.jpg')
     bookpdf = models.FileField(upload_to= "book/")
     no_of_pages = models.IntegerField()
-
+    tags = TaggableManager()
     def __str__(self):
         return self.name

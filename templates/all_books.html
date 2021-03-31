@@ -7,17 +7,35 @@
 {% block content %}
 
 <div class="container">
-
-    <ul class="list-group">
         
+    <div class="row my-5">
         {% for obj in object %}
 
-            <li class="list-group-item">{{obj}} <span class="badge bg-secondary" style="float:right;">{{obj.uploaded_by}}</span></li>
+        <div class="card col-md-4" style="width: 18rem;">
+            <img src="{{obj.thumbnail.url}}" class="card-img-top" alt="{{obj.name}}">
+            <div class="card-body">
+                <h5 class="card-title">{{obj.name}}</h5>
+                <p class="card-text">Author: <span class="badge bg-secondary">{{obj.author}}</span></p>
+                <p class="card-text">Uploaded by:  <a href="#"><span class="badge bg-success">{{obj.uploaded_by}}</span></p></a>
+                <p class="card-text">
+                    {% for tag in obj.tags.all %}
+                        <span class="badge bg-secondary">{{tag}}</span>
+                    {% endfor %}
+                </p>
+            </div>
+          </div>  
         
         {% endfor %}
+    </div>
 
-    </ul>
       
 </div>
 
+{% endblock %}
+
+{% block script %}
+    <script>
+        let act=document.getElementById('books');
+        act.classList.add('active');
+    </script>
 {% endblock %}

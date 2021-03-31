@@ -1,19 +1,46 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>
-        Problems
-    </title>
+<title>
+    Doubts
+</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        a{
+            text-decoration: none;
+            color: black;
+            font-size: large;
+            font-weight: 400;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        
-        <ul class="list-group">
-            {% for obj in objects %}
-                <li class="list-group-item">{{obj.question}} <span class="badge bg-secondary" style="float:right;">{{obj.author}}</span></li>
-            {% endfor %}
-        </ul>
-
+<div class="container">
+    <div class="my-3">
+        <div>
+            <h1>All doubts:</h1>
+        </div>
+        <div>
+            <ul class="list-group">
+                {% for obj in objects %}
+                <li class="list-group-item"><a href="{% url 'show_doubt' obj.id %}">{{obj.question}} <a href="{% url 'home' %}"><span class="badge bg-secondary"
+                        style="float:right;">{{obj.author}}</span></a></a> </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let act = document.getElementById('doubts');
+    act.classList.add('active');
+</script>
 {% endblock %}
