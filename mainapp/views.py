@@ -143,4 +143,5 @@ def book_view( request , pk ):
     }
     return render(request, 'book_view.html', context)
 
-
+def user_info(request , slug):
+    return HttpResponse("user_info")

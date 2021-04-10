@@ -4,32 +4,61 @@
     Doubt
 </title>
 {% endblock %}
+
+{% block style %}
+<style>
+    .container{
+        margin-top: 10px;
+        padding-left: 10%;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div>
-        <h3>{{object}}</h3><span class="badge bg-secondary">{{object.author}}</span>
-    </div>
-    <div>
-        {% for obj in object.solution_set.all %}
-        <p>{{obj}}</p>
-        <span class="badge bg-secondary">{{obj.author}}</span>
-        {% endfor %}
-    </div>
-    <div class="new ans">
-        <h5>Write a answer to this question</h5>
         <div>
-            <form action="" method="POST">
-                {% csrf_token %}
-                <textarea name="answer" id="" cols="30" rows="10">
-                </textarea>
-                {% if request.user.is_authenticated %}
+            <h2>{{object}}</h2>
+            <p>Asked By: 
+                <a href="{% url 'user_info' object.author.slug %}">
+                    <span class="badge bg-secondary">{{object.author}}</span>
+                </a>
+            </p>
+        </div>
+
+        <hr>
+
+        <div>
+            {% for obj in object.solution_set.all %}
+            <p style="font-size: larger; font-weight: 400;">{{obj}}</p>
+            <p>By: <a href="{% url 'user_info' obj.author.slug %}"><span class="badge bg-secondary">{{obj.author}}</span></a></p>
+            <hr>
+            {% endfor %}
+        </div>
+        <div class="new ans">
+            <h5>Write a answer to this question</h5>
+            <div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <textarea name="answer" id="" cols="30" rows="10">
+                    </textarea>
+                    <br>
+                    {% if request.user.is_authenticated %}
                     <button type="submit" class="btn btn-success">Submit</button>
-                {% else %}
+                    {% else %}
                     <button type="submit" class="btn btn-success" disabled>Submit</button>
-                {% endif %}
-                
-            </form>
+                    {% endif %}
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let act = document.getElementById('doubts');
+    act.classList.add('active');
+</script>
 {% endblock %}

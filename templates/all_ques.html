@@ -29,7 +29,7 @@
         <div>
             <ul class="list-group">
                 {% for obj in objects %}
-                <li class="list-group-item"><a href="{% url 'show_doubt' obj.id %}">{{obj.question}} <a href="{% url 'home' %}"><span class="badge bg-secondary"
+                <li class="list-group-item"><a href="{% url 'show_doubt' obj.id %}">{{obj.question}} <a href="{% url 'user_info' obj.author.slug %}"><span class="badge bg-secondary"
                         style="float:right;">{{obj.author}}</span></a></a> </li>
                 {% endfor %}
             </ul>
