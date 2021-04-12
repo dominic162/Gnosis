@@ -41,6 +41,11 @@
           </li>
         </ul>
         <div class="d-flex">
+          <button type="button" class="btn btn-outline-dark my-2 my-sm-0 mx-2" name="query" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <img src="https://img.icons8.com/android/24/000000/search.png" />
+          </button>
+
           {% if request.user.is_authenticated %}
           <ul style="list-style: none;">
             <li class="nav-item dropdown">
@@ -49,22 +54,22 @@
                 <img src="https://img.icons8.com/ios/30/000000/gender-neutral-user.png" />
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
+
                 <li><a class="dropdown-item" href="{%url 'user_info' request.user.username%}">Profile</a></li>
                 <li><a class="dropdown-item" href="{%url 'logout'%}">Logout</a></li>
-          
+
               </ul>
             </li>
           </ul>
 
           <a href="{% url 'logout' %}">
-            <button type="button" class="btn btn-outline-success">
+            <button type="button" class="btn btn-outline-dark my-2 my-sm-0 ">
               Logout
             </button>
           </a>
           {% else %}
           <a href="{% url 'login' %}">
-            <button type="button" class="btn btn-outline-success">
+            <button type="button" class="btn btn-outline-dark my-2 my-sm-0 ">
               Login
             </button>
           </a>
@@ -82,6 +87,33 @@
   {% block content %}
 
   {% endblock %}
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Search Blogs</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form action="{% url 'search' %}" method="GET" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2 " id="querydata" type="search" placeholder="Ex Blog" aria-label="Search"
+              name="search_query" id="search_query">
+            <small class="form-text text-muted">Search by keywords such as Python, Blog, Politics etc.</small>
+        </div>
+
+        <div class="modal-footer">
+
+          <button class="btn btn btn-outline-success" id="submitbtn" name="submitbtn" type="submit">Search</button>
+        </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 
   {% block script%}
 

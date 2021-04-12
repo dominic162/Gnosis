@@ -145,3 +145,14 @@ def book_view( request , pk ):
 
 def user_info(request , slug):
     return HttpResponse("user_info")
+
+def search(request):
+    query = request.GET['search_query']
+    post1 = book.objects.filter(name__icontains = query)
+    post2 = book.objects.filter(tags__slug = query)
+    allpost = post1.union(post2)
+    context={
+        'allpost' : allpost,
+        'query' : query,
+    }
+    return render(request,'search.html',context)
