@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
 from django.contrib.auth.models import User
@@ -6,6 +7,9 @@ from .forms import login_form , signup_form , ask_doubt , new_book
 from .models import doubts, appuser, solution , book
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
+from reportlab.pdfgen import canvas
+
+
 
 # Create your views here.
 
@@ -78,6 +82,15 @@ def allques(request):
     context = {
         'objects':objects,
     }
+
+    if request.method == "POST":
+        query = request.POST['query_doubt']
+        post1 = doubts.objects.filter(question__icontains = query)
+        post2 = doubts.objects.filter(tags__slug = query)
+        allpost = post1.union(post2)
+        context['allpost'] = allpost
+        context['query'] = query
+
     return render(request, 'all_ques.html', context)
 
 
@@ -135,16 +148,32 @@ def all_books(request):
     context = {
         'object' : book.objects.all(),
     }
+    if request.method == "POST":
+        if 'search_query' in request.POST:
+            query = request.POST['search_query']
+            post1 = book.objects.filter(name__icontains = query)
+            post2 = book.objects.filter(tags__slug = query)
+            allpost = post1.union(post2)
+            context['allpost'] = allpost
+            context['query'] = query
+        
+        if 'add_book' in request.POST:
+            request.POST = request.POST.copy()
+            request.POST['uploaded_by'] = appuser.objects.get( username = request.user.username )
+            form = new_book( request.POST , request.FILES )
+            if form.is_valid():
+                form.save()
+                context['added_new'] = True
+            else:
+                context['error'] = 'Enter all required fields'
+            
     return render(request, 'all_books.html', context)
 
-def book_view( request , pk ):
-    context = {
-        'object' : book.objects.get(pk = pk),
-    }
-    return render(request, 'book_view.html', context)
-
 def user_info(request , slug):
-    return HttpResponse("user_info")
+    context = {
+        'object' : appuser.objects.get(slug = slug)
+    }
+    return render(request , 'user.html', context)
 
 def search(request):
     query = request.GET['search_query']
@@ -156,3 +185,7 @@ def search(request):
         'query' : query,
     }
     return render(request,'search.html',context)
+
+def contact_us(request):
+    return HttpResponse('contact_us')
+

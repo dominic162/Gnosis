@@ -1,0 +1,63 @@
+{%extends 'base.html'%}
+{%block title%}
+<title>
+    {{object.slug}}
+</title>
+{%endblock%}
+
+{%block content%}
+{%load static%}
+<div class="container">
+    <div class="row " >
+        <div class="col-md-4 mx-3 my-3 ">
+            <img src="{{object.userimage.url}}" class="img-fluid border rounded shadow p-3 mb-5 bg-white rounded" alt="responsive image" >
+        </div>
+        <div class="col-md-7 mx-1 my-3" >
+
+            <ul class="list-group-flush shadow p-3 mb-5 bg-white rounded ">
+
+                <li class="list-group-item"><b> Username: </b> {{object.username}}</li>
+                <li class="list-group-item"><b>Name: </b> {{object.name}}</li>
+                <li class="list-group-item"><b>Email: </b> {{object.email}}</li>
+                <li class="list-group-item">
+                    <b>Interests: </b>
+                    {% for tag in object.tags.all %}
+                    <span class="badge bg-secondary" >{{tag}}</span>
+                    {% endfor %}
+                </li>
+                <li class="list-group-item"><b>Question answered by 
+                    {% if request.user.username == object.username %}
+                        you :
+                    {% else %}
+                        {{object.username}} : 
+                    {%endif%}
+                    </b>
+                    <ul class="list-group-flush my-2">
+                        {% if object.solution_set.all|length < 1 %}
+                        <div style="display: flex; justify-content: center;">
+                            <div>
+                                <img src="{% static 'mainapp/noblog.svg' %}" style="width: 200px; height: 200px; margin: 10px;" alt="No blog ">
+                                <p style="font-weight: 500;">
+                                    {% if request.user.username == object.username %}
+                                        You haven't written any blog till now.
+                                        <a  href="#">Write</a> one now.
+                                    {% else %}
+                                        {{object.username}} haven't written any blog till now.
+                                    {%endif%} 
+                                    
+                                </p>
+                            </div>
+                        </div>
+                            {% else %}
+                            {% for obj in object.solution_set.all %}
+                                <li class="list-group-item"><a href="#">{{obj.question}}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,41 +1,200 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
-    <title>
-        All Books
-    </title>
+<title>
+    All Books
+</title>
+{% endblock %}
+
+{% block link %}
+
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+{% endblock %}
+
+{% block style %}
+<style>
+    .card {
+        background-color: rgb(204, 196, 196);
+        font-size: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+</style>
 {% endblock %}
 {% block content %}
+{% if added_new %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>New book added successfully</strong> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert- alert-dismissible fade show" role="alert">
+    <strong>{{error}}</strong> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 
 <div class="container">
-        
-    <div class="row my-5">
-        {% for obj in object %}
-
-        <div class="card col-md-4" style="width: 18rem;">
-            <img src="{{obj.thumbnail.url}}" class="card-img-top" alt="{{obj.name}}">
-            <div class="card-body">
-                <h5 class="card-title">{{obj.name}}</h5>
-                <p class="card-text">Author: <span class="badge bg-secondary">{{obj.author}}</span></p>
-                <p class="card-text">Uploaded by:  <a href="#"><span class="badge bg-success">{{obj.uploaded_by}}</span></p></a>
-                <p class="card-text">
-                    {% for tag in obj.tags.all %}
-                        <span class="badge bg-secondary">{{tag}}</span>
-                    {% endfor %}
-                </p>
+    <div class="search-books my-2">
+        <div class="my-4">
+            <div class="d-flex justify-content-center h-100">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="searchbar">
+                        <input class="search_input" type="text" name="search_query"
+                            placeholder="Search by keyword ex python , tech">
+                        <a type="submit" class="search_icon"><i class="fas fa-search"></i></a>
+                    </div>
+                </form>
             </div>
-          </div>  
-        
-        {% endfor %}
+        </div>
     </div>
 
-      
-</div>
+    <div class="add-new">
+        <h4 style="color: rgb(113, 163, 163); text-align: right;">Add new book
+            <i type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="fas fa-plus-circle"></i>
+        </h4>
+    </div>
 
+    {% if query %}
+    <div class="random-books my-4">
+        <div>
+            <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Books based on {{query}}:
+            </h1>
+            <div class="row my-4">
+                {% for obj in allpost %}
+
+                <div class="card col-md-4 shadow-lg p-3 mb-5 bg-body"
+                    style="width: 18rem; border-radius: 10px; margin: 2px 15px; border: solid 1px black;">
+                    <img src="{{obj.thumbnail.url}}" class="card-img-top my-2" alt="{{obj.name}}"
+                        style="width: 250px; height: 150px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{obj.name}}</h5>
+                        <p class="card-text">Author: <span class="badge bg-secondary">{{obj.author}}</span></p>
+                        <p class="card-text">Uploaded by: <a href="{% url 'user_info' obj.uploaded_by.slug %}"><span
+                                    class="badge bg-success">{{obj.uploaded_by}}</span></p></a>
+                        <p class="card-text">Pages: {{obj.no_of_pages}}</p>
+                        <p class="card-text">Book pdf: <a href="/media/{{obj.bookpdf}}" target="_blank"> Click here</a>
+                        </p>
+                        <p class="card-text">
+                            Fields:
+                            {% for tag in obj.tags.all %}
+                            <span class="badge bg-secondary">{{tag}}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="random-books my-4">
+        <div>
+            <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Random Books </h1>
+            <div class="row my-4">
+                {% for obj in object %}
+
+                <div class="card col-md-4 shadow p-3 mb-5 bg-body"
+                    style="width: 18rem; border-radius: 10px; margin: 2px 15px; border: solid 1px black;">
+                    <img src="{{obj.thumbnail.url}}" class="card-img-top my-2" alt="{{obj.name}}"
+                        style="width: 250px; height: 170px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{obj.name}}</h5>
+                        <p class="card-text">Author: <span class="badge bg-secondary">{{obj.author}}</span></p>
+                        <p class="card-text">Uploaded by: <a href="{% url 'user_info' obj.uploaded_by.slug %}"><span
+                                    class="badge bg-success">{{obj.uploaded_by}}</span></p></a>
+                        <p class="card-text">Pages: {{obj.no_of_pages}}</p>
+                        <p class="card-text">Book pdf: <a href="/media/{{obj.bookpdf}}" target="_blank"> Click here</a>
+                        </p>
+                        <p class="card-text">
+                            Fields:
+                            {% for tag in obj.tags.all %}
+                            <span class="badge bg-secondary">{{tag}}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD BOOK</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Book Name" name="name">
+                        <label for="name">Book Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="author" placeholder="Author's Name" name="author">
+                        <label for="author">Author's Name</label>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="thumbnail">Thumbnail</label>
+                        <input type="file" class="form-control" id="thumbnail" name="thumbnail">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupFile01">Book pdf</label>
+                        <input type="file" class="form-control" id="inputGroupFile01" name="bookpdf">
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="pages" placeholder="No Of Pages" name="no_of_pages">
+                        <label for="pages">No of Pages</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="tags" placeholder="Tags" name="tags">
+                        <label for="pages">Tags</label>
+                    </div>
+                    {% if request.user.is_authenticated %}
+                        <button type="submit" name="add_book" class="btn btn-success">ADD</button>
+                    {% else %}
+                    <button type="submit" name="add_book" class="btn btn-success" disabled>ADD</button>
+                    <small>You must login to add book.</small>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}
 
 {% block script %}
-    <script>
-        let act=document.getElementById('books');
-        act.classList.add('active');
-    </script>
+<script>
+    let act = document.getElementById('books');
+    act.classList.add('active');
+
+    const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('search-input');
+    searchButton.addEventListener('click', () => {
+        const inputValue = searchInput.value;
+        alert(inputValue);
+    });
+
+</script>
 {% endblock %}

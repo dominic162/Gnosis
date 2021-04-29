@@ -1,18 +1,55 @@
 <!doctype html>
 <html lang="en">
-
+{% load static %}
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
+  
   {% block title %}
 
   {% endblock %}
+
+  <!-- Bootstrap CSS -->
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+  {% block link%}
+  {% endblock %}
+
+  
+  <style>
+
+    
+
+    li:hover{
+      cursor: pointer;
+    }
+
+    .nav-link{
+      font-weight: 700;
+      margin: 2px 5px;
+    }
+    .nav-link:hover{
+      background-color: rgb(194, 183, 183);
+      border-radius: 5px;
+    }
+
+    .active{
+      color: black;
+    }
+
+    .auth{
+      border-radius: 50px;
+      border: solid 2px blue;
+    }
+
+    body{
+      background-color: rgb(48, 42, 42);
+    }
+
+  </style>
 
   {% block style %}
 
@@ -23,7 +60,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">GNOSIS</a>
+      <a class="navbar-brand" href="#"><img src="{% static 'images/wix.svg' %}" style="height: 50px; width: 50px; border-radius: 10px;"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -34,20 +71,26 @@
             <a class="nav-link" id="home" aria-current="page" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="books" aria-current="page" href="{% url 'all_books' %}">Books</a>
+            <a class="nav-link" id="books" aria-current="page" href="{% url 'all_books' %}">E-library</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="doubts" aria-current="page" href="{% url 'all_doubts' %}">Doubts</a>
+            <a class="nav-link" id="doubts" aria-current="page" href="{% url 'all_doubts' %}">Discuss</a>
           </li>
         </ul>
         <div class="d-flex">
-          <button type="button" class="btn btn-outline-dark my-2 my-sm-0 mx-2" name="query" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">
-            <img src="https://img.icons8.com/android/24/000000/search.png" />
-          </button>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url  'contact_us' %}">Contact</a>
+            </li>
+          </ul>
 
           {% if request.user.is_authenticated %}
-          <ul style="list-style: none;">
+          <a href="{% url 'logout' %}">
+            <button type="button" class="auth btn btn-outline-primary my-2 my-sm-0 mx-2">
+              My account
+            </button>
+          </a>
+          <!--ul style="list-style: none;">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -60,16 +103,16 @@
 
               </ul>
             </li>
-          </ul>
+          </ul-->
 
           <a href="{% url 'logout' %}">
-            <button type="button" class="btn btn-outline-dark my-2 my-sm-0 ">
+            <button type="button" class="auth btn btn-outline-primary my-2 my-sm-0 ">
               Logout
             </button>
           </a>
           {% else %}
           <a href="{% url 'login' %}">
-            <button type="button" class="btn btn-outline-dark my-2 my-sm-0 ">
+            <button type="button" class="auth btn btn-outline-primary my-2 my-sm-0 ">
               Login
             </button>
           </a>
@@ -78,6 +121,7 @@
       </div>
     </div>
   </nav>
+  
   {% if error %}
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{ error }}
@@ -88,32 +132,7 @@
 
   {% endblock %}
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Search Blogs</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <form action="{% url 'search' %}" method="GET" class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2 " id="querydata" type="search" placeholder="Ex Blog" aria-label="Search"
-              name="search_query" id="search_query">
-            <small class="form-text text-muted">Search by keywords such as Python, Blog, Politics etc.</small>
-        </div>
-
-        <div class="modal-footer">
-
-          <button class="btn btn btn-outline-success" id="submitbtn" name="submitbtn" type="submit">Search</button>
-        </div>
-        </form>
-
-      </div>
-    </div>
-  </div>
+  
 
   {% block script%}
 

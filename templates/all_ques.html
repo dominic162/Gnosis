@@ -7,32 +7,77 @@
 {% endblock %}
 
 {% block style %}
-    <style>
-        a{
-            text-decoration: none;
-            color: black;
-            font-size: large;
-            font-weight: 400;
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-    </style>
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+        font-size: large;
+        font-weight: 400;
+    }
+
+    a:hover {
+        text-decoration: underline;
+
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="my-3">
-        <div>
-            <h1>All doubts:</h1>
+        <div class="search-doubt">
+            <h1> Search Doubts: </h1>
+            <form class="row" method="POST">
+                {% csrf_token %}
+                <div class="form-floating mb-3 col-md-6">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Enter keywords"
+                        name="query_doubt">
+                    <label for="floatingInput"> Enter keywords like Python etc</label>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-dark my-2 my-sm-0 mx-2">
+                        <img src="https://img.icons8.com/android/24/000000/search.png" />
+                    </button>
+                </div>
+
+            </form>
         </div>
+
+        {% if query %}
         <div>
-            <ul class="list-group">
-                {% for obj in objects %}
-                <li class="list-group-item"><a href="{% url 'show_doubt' obj.id %}">{{obj.question}} <a href="{% url 'user_info' obj.author.slug %}"><span class="badge bg-secondary"
-                        style="float:right;">{{obj.author}}</span></a></a> </li>
-                {% endfor %}
-            </ul>
+            <h3>Your search: </h3>
+            {% for obj in allpost %}
+            <div style="border: solid 1px rgb(95, 90, 90); border-radius: 10px; padding: 2px 10px; margin-bottom: 10px;">
+                <p><img src="{{obj.author.userimage.url}}" class="img-thumbnail" style="height: 50px; width: 50px; border-radius: 50%; margin-right: 10px;" alt="User image">
+                    <a href="{% url 'show_doubt' obj.id %}"><span style="font-size: x-large; font-weight: 500;">{{obj}}</span></a>
+                    <span style="float: right;">
+                        Asked By: 
+                        <a href="{% url 'user_info' obj.author.slug %}">
+                            <span class="badge bg-secondary">{{obj.author}}</span>
+                        </a>
+                    </span>
+                </p>
+                <p>
+                    Total answers: {{obj.solution_set.all|length}}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div>
+            <div>
+                <h1>All doubts:</h1>
+            </div>
+            <div>
+                <ul class="list-group">
+                    {% for obj in objects %}
+                    <li class="list-group-item"><a href="{% url 'show_doubt' obj.id %}">{{obj.question}} <a
+                                href="{% url 'user_info' obj.author.slug %}"><span class="badge bg-secondary"
+                                    style="float:right;">{{obj.author}}</span></a></a> </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>
