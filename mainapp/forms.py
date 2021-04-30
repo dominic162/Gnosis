@@ -37,3 +37,9 @@ class new_book( forms.ModelForm ):
         widgets = {
             'uploaded_by' : forms.HiddenInput(),
         } 
+
+class contact_form( forms.ModelForm ):
+    class Meta:
+        model = models.contact
+        fields = '__all__'
+        

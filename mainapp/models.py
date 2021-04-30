@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from phone_field import PhoneField
 
 # Create your models here.
 
@@ -38,5 +39,14 @@ class book(models.Model):
     bookpdf = models.FileField(upload_to= "book/")
     no_of_pages = models.IntegerField()
     tags = TaggableManager()
+    def __str__(self):
+        return self.name
+
+class contact(models.Model):
+    name = models.CharField(max_length = 50)
+    email = models.EmailField()
+    phone = PhoneField(blank = True)
+    message = models.TextField()
+
     def __str__(self):
         return self.name

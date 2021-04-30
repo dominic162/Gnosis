@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .forms import login_form , signup_form , ask_doubt , new_book
+from .forms import login_form , signup_form , ask_doubt , new_book , contact_form
 from .models import doubts, appuser, solution , book
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
@@ -127,22 +127,6 @@ def show_doubt(request , pk ):
         obj.save()
     return render(request, 'show_doubt.html', context)
 
-@login_required( login_url = '/login')
-def add_book(request):
-    context = {}
-
-    if request.method == "POST":
-        request.POST = request.POST.copy()
-        request.POST['uploaded_by'] = appuser.objects.get( username = request.user.username )
-        form = new_book( request.POST , request.FILES )
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/")
-
-        else:
-            context['error'] = 'Enter all required fields'
-
-    return render(request, 'add_book.html', context)
 
 def all_books(request):
     context = {
@@ -163,7 +147,7 @@ def all_books(request):
             form = new_book( request.POST , request.FILES )
             if form.is_valid():
                 form.save()
-                context['added_new'] = True
+                context['success'] = 'New Book added successfully'
             else:
                 context['error'] = 'Enter all required fields'
             
@@ -175,17 +159,16 @@ def user_info(request , slug):
     }
     return render(request , 'user.html', context)
 
-def search(request):
-    query = request.GET['search_query']
-    post1 = book.objects.filter(name__icontains = query)
-    post2 = book.objects.filter(tags__slug = query)
-    allpost = post1.union(post2)
-    context={
-        'allpost' : allpost,
-        'query' : query,
-    }
-    return render(request,'search.html',context)
 
 def contact_us(request):
-    return HttpResponse('contact_us')
+    context = { }
+    if request.method == 'POST':
+        form = contact_form( request.POST )
+        if form.is_valid():
+            form.save()
+            context['success'] = 'Message sent successfully'
+        else:
+            context['error'] = 'Enter all required fields correctly.'
+
+    return render(request , 'contact.html' , context)
 

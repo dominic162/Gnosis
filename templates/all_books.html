@@ -24,19 +24,7 @@
 </style>
 {% endblock %}
 {% block content %}
-{% if added_new %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>New book added successfully</strong> 
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
 
-{% if error %}
-<div class="alert alert- alert-dismissible fade show" role="alert">
-    <strong>{{error}}</strong> 
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
 
 <div class="container">
     <div class="search-books my-2">
@@ -61,7 +49,7 @@
     </div>
 
     {% if query %}
-    <div class="random-books my-4">
+    <div class="random-books my-4" style="display: flex; justify-content: center; align-items: center;">
         <div>
             <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Books based on {{query}}:
             </h1>
@@ -94,7 +82,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="random-books my-4">
+    <div class="random-books my-4" style="display: flex; justify-content: center; align-items: center;">
         <div>
             <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Random Books </h1>
             <div class="row my-4">
@@ -172,7 +160,7 @@
                         <button type="submit" name="add_book" class="btn btn-success">ADD</button>
                     {% else %}
                     <button type="submit" name="add_book" class="btn btn-success" disabled>ADD</button>
-                    <small>You must login to add book.</small>
+                    <small>You must <a href="{% url 'login' %}"> login </a> to add book.</small>
                     {% endif %}
                 </form>
             </div>

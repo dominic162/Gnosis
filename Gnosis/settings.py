@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'taggit',
+    'phone_field'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

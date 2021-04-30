@@ -6,5 +6,6 @@ admin.site.register([
     models.appuser,
     models.doubts,
     models.solution,
-    models.book
+    models.book,
+    models.contact
     ])
