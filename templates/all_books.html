@@ -49,11 +49,12 @@
     </div>
 
     {% if query %}
-    <div class="random-books my-4" style="display: flex; justify-content: center; align-items: center;">
+    <div class="random-books my-4" style="display:flex; justify-content: center; align-items: center;">
         <div>
             <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Books based on {{query}}:
             </h1>
             <div class="row my-4">
+                
                 {% for obj in allpost %}
 
                 <div class="card col-md-4 shadow-lg p-3 mb-5 bg-body"
@@ -82,7 +83,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="random-books my-4" style="display: flex; justify-content: center; align-items: center;">
+    <div class="random-books my-4" style="display:flex; justify-content: center; align-items: center;">
         <div>
             <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Random Books </h1>
             <div class="row my-4">

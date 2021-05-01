@@ -9,7 +9,7 @@ urlpatterns = [
     path('signup',          views.auth_signup,  name = "signup"),
     path('logout',          views.auth_logout,  name = "logout"),
     path('all-doubts',      views.allques,      name = "all_doubts"),
-    path('new-doubt',       views.ask,          name = "ask_doubt"),
+    
     path('doubt/<int:pk>',  views.show_doubt,   name = "show_doubt"),
     path('all-books',       views.all_books,    name = "all_books"),
     path('users/<slug>',    views.user_info,    name = "user_info"),

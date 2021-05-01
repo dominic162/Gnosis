@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http40
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .forms import login_form , signup_form , ask_doubt , new_book , contact_form
-from .models import doubts, appuser, solution , book
+from .models import doubts, appuser, solution , book 
+from taggit.models import Tag
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
@@ -78,39 +79,54 @@ def auth_logout(request):
     return HttpResponseRedirect("/")
 
 def allques(request):
-    objects = doubts.objects.all()
+    all_doubts = doubts.objects.all()
+    all_tags = Tag.objects.all()
+    pth_dbt = doubts.objects.filter(tags__slug = 'python')
+    cvd = doubts.objects.filter(tags__slug = 'covid')
+    tech = doubts.objects.filter(tags__slug = 'tech')
+    webd_d = doubts.objects.filter(tags__slug = 'webd')
+    politics = doubts.objects.filter(tags__slug = 'politics')
+
     context = {
-        'objects':objects,
+        'doubts' : all_doubts,
+        'alltags' : all_tags,
+        'pthdbt' : pth_dbt,
+        'webd' : webd_d,
+        'tech' : tech,
+        'covid' : cvd,
+        'politics' : politics,
+
     }
 
+    if request.user.is_authenticated:
+        cuser = appuser.objects.filter(username = request.user.username)
+        your_doubt = doubts.objects.filter(author = cuser)
+        context['your_doubt'] = your_doubt
+
+
     if request.method == "POST":
-        query = request.POST['query_doubt']
-        post1 = doubts.objects.filter(question__icontains = query)
-        post2 = doubts.objects.filter(tags__slug = query)
-        allpost = post1.union(post2)
-        context['allpost'] = allpost
-        context['query'] = query
+        if 'search_query' in request.POST : 
+            query = request.POST['query_doubt']
+            post1 = doubts.objects.filter(question__icontains = query)
+            post2 = doubts.objects.filter(tags__slug = query)
+            allpost = post1.union(post2)
+            context['allpost'] = allpost
+            context['query'] = query
+        
+        if 'ask' in request.POST : 
+            request.POST = request.POST.copy()
+            request.POST['author'] = appuser.objects.get( username = request.user.username )
+            form = ask_doubt( request.POST )
+            if form.is_valid() :
+                form.save()
+            else:
+                context['error'] = 'Enter all required fields'
+            
 
     return render(request, 'all_ques.html', context)
 
 
-@login_required(login_url='/login')
-def ask(request):
-    context = {
-        'form' : ask_doubt()
-    }
 
-    if request.method == "POST":
-        request.POST = request.POST.copy()
-        request.POST['author'] = appuser.objects.get( username = request.user.username )
-        form = ask_doubt( request.POST )
-        if form.is_valid() :
-            form.save()
-            return HttpResponseRedirect("/")
-        else:
-            context['error'] = 'error'
-
-    return render(request, 'ask.html', context)
 
 def show_doubt(request , pk ):
     doubt = doubts.objects.get( pk = pk )
