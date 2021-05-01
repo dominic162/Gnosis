@@ -14,12 +14,8 @@
 
 {% block style %}
 <style>
-    body {
-        background-color: white;
-    }
-
     .black-theme {
-        background-color: black;
+        background-color: rgb(43, 41, 41);
         color: rgb(168, 176, 219);
     }
 
@@ -36,10 +32,7 @@
         margin-top: 10px;
     }
 
-    .list-active {
-        font-size: larger;
-        color: aqua;
-    }
+
 
     .form-floating {
         color: black;
@@ -49,6 +42,12 @@
     .collapse {
         color: grey;
     }
+
+    .que > p{
+        font-size: large;
+        margin: 2px 2px;
+    }
+
 </style>
 {% endblock %}
 
@@ -85,15 +84,18 @@
             <hr>
             <h6>Labels:</h6>
             <ul class="my-list">
-                <li class="list-active" data-bs-toggle="collapse" href="#python" role="button" aria-expanded="false"
+                <li class=" labels " data-bs-toggle="collapse" href="#python" role="button" aria-expanded="false"
                     aria-controls="python">Python</li>
-                <li data-bs-toggle="collapse" href="#tech" role="button" aria-expanded="false" aria-controls="tech">
+                <li class=" labels " data-bs-toggle="collapse" href="#tech" role="button" aria-expanded="false"
+                    aria-controls="tech">
                     Tech</li>
-                <li data-bs-toggle="collapse" href="#politics" role="button" aria-expanded="false"
+                <li class=" labels " data-bs-toggle="collapse" href="#politics" role="button" aria-expanded="false"
                     aria-controls="politics"> Politics</li>
-                <li data-bs-toggle="collapse" href="#webd" role="button" aria-expanded="false" aria-controls="webd">
+                <li class=" labels " data-bs-toggle="collapse" href="#webd" role="button" aria-expanded="false"
+                    aria-controls="webd">
                     Webd</li>
-                <li data-bs-toggle="collapse" href="#covid" role="button" aria-expanded="false" aria-controls="covid">
+                <li class=" labels " data-bs-toggle="collapse" href="#covid" role="button" aria-expanded="false"
+                    aria-controls="covid">
                     Covid</li>
             </ul>
 
@@ -106,7 +108,7 @@
                     doubt</button></h4>
             <hr>
 
-            <div class="collapse card " id="new-doubt">
+            <div class="collapse card my-1" id="new-doubt">
                 <div class="card card-body">
                     <form action="" method="POST">
                         {% csrf_token %}
@@ -129,27 +131,71 @@
                 </div>
             </div>
 
-            <div class="collapse" id="all-que">
+            {% if query %}
+            <div id="query_reply">
+                <div class="card card-body">
+                    <h3 style="color: rgb(56, 54, 54);">Doubts on {{query}} : </h3>
+                    <ul class="list-group">
+                        {% for obj in allpost %}
+                        <li class="list-group-item" style="color: black; font-size: large;">
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
+                                </span>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="collapse my-1" id="all-que">
                 <div class="card card-body">
 
                     <ul class="list-group">
                         {% for obj in doubts %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
 
-            <div class="collapse" id="asked-by-you">
+            <div class="collapse my-1" id="asked-by-you">
                 <div class="card card-body">
                     {% if request.user.is_authenticated %}
 
@@ -165,93 +211,148 @@
 
 
 
-            <div class="collapse" id="python">
+            <div class="collapse my-1" id="python">
                 <div class="card card-body">
                     <ul class="list-group">
                         {% for obj in pthdbt %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
 
-            <div class="collapse" id="tech">
+            <div class="collapse my-1" id="tech">
                 <div class="card card-body">
                     <ul class="list-group">
-                        {% for obj in pthdbt %}
+                        {% for obj in tech %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="collapse" id="politics">
+            <div class="collapse my-1" id="politics">
                 <div class="card card-body">
                     <ul class="list-group">
                         {% for obj in politics %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="collapse" id="covid">
+            <div class="collapse my-1" id="covid">
                 <div class="card card-body">
                     <ul class="list-group">
                         {% for obj in covid %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="collapse" id="webd">
+            <div class="collapse my-1" id="webd">
                 <div class="card card-body">
                     <ul class="list-group">
                         {% for obj in webd %}
                         <li class="list-group-item" style="color: black; font-size: large;">
-                            <a href="{% url 'show_doubt' obj.id %}">
-                                {{obj}}
-                            </a>
-                                <span class="badge bg-secondary" style="float: right;">
-                                    <a style="text-decoration: none; color: inherit;"
-                                        href="{% url 'user_info' obj.author.id %}">{{obj.author}}
-                                    </a>
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
                                 </span>
-                                </li>
+
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.id %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -269,8 +370,6 @@
 <script>
     let act = document.getElementById('doubts');
     act.classList.add('active');
-
-
 
 </script>
 {% endblock %}

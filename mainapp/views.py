@@ -106,7 +106,7 @@ def allques(request):
 
     if request.method == "POST":
         if 'search_query' in request.POST : 
-            query = request.POST['query_doubt']
+            query = request.POST['search_query']
             post1 = doubts.objects.filter(question__icontains = query)
             post2 = doubts.objects.filter(tags__slug = query)
             allpost = post1.union(post2)
