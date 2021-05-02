@@ -17,6 +17,7 @@
     .black-theme {
         background-color: rgb(43, 41, 41);
         color: rgb(168, 176, 219);
+        font-weight: 500;
     }
 
     .list-group-item {
@@ -198,7 +199,31 @@
             <div class="collapse my-1" id="asked-by-you">
                 <div class="card card-body">
                     {% if request.user.is_authenticated %}
+                    <ul class="list-group">
+                        {% for obj in cuser %}
+                        <li class="list-group-item" style="color: black; font-size: large;">
+                            <p class="que">
+                                <a href="{% url 'show_doubt' obj.id %}">
+                                    {{obj}}
+                                </a>
+                                <span style="float: right;">
+                                    {% for tag in obj.tags.all %}
+                                    <span class="badge bg-secondary" style="float: right; margin-right: 2px;">{{tag}}</span>
+                                    {% endfor %}
+                                </span>
 
+                                
+                            </p>
+                            <small class="que"> Asked by: 
+                                <a style="text-decoration: none;"
+                                    href="{% url 'user_info' obj.author.slug %}">{{obj.author}}
+                                </a>
+                                <span style="float: right;">{{obj.solution_set.all|length}} answers </span>
+                            </small>
+                            
+                        </li>
+                        {% endfor %}
+                    </ul>
                     {% else %}
                     <p>
                         <img src="{% static 'images/oops.jpg' %}" alt="login-first"

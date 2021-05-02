@@ -99,9 +99,9 @@ def allques(request):
     }
 
     if request.user.is_authenticated:
-        cuser = appuser.objects.filter(username = request.user.username)
-        your_doubt = doubts.objects.filter(author = cuser)
-        context['your_doubt'] = your_doubt
+        cuser = appuser.objects.filter(username = request.user.username).first()
+        ydoubt = doubts.objects.filter(author = cuser)
+        context['cuser'] = ydoubt
 
 
     if request.method == "POST":

@@ -11,17 +11,21 @@
         margin-top: 10px;
         padding-left: 10%;
     }
+
+    hr{
+        border-top: solid 4px rgb(125, 219, 188);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 <div class="container">
-    <div>
+    <div class="my-4">
         <div>
             
-            <h2><img src="{{object.author.userimage.url}}" class="img-thumbnail" style="height: 50px; width: 50px; border-radius: 50%; margin-right: 10px;" alt="User image">{{object}}</h2>
-            <p>Asked By: 
+            <h2 style="color: rgba(255, 255, 255, 0.89);"><img src="{{object.author.userimage.url}}" class="img-thumbnail" style="height: 50px; width: 50px; border-radius: 50%; margin-right: 10px;" alt="User image">{{object}}</h2>
+            <p style="color: rgba(255, 255, 255, 0.89);">Asked By: 
                 <a href="{% url 'user_info' object.author.slug %}">
                     <span class="badge bg-secondary">{{object.author}}</span>
                 </a>
@@ -33,23 +37,23 @@
         <div>
             {% for obj in object.solution_set.all %}
             <p><img src="{{obj.author.userimage.url}}" class="img-thumbnail" style="height: 50px; width: 50px; border-radius: 50%; margin-right: 10px;" alt="User image"> <a href="{% url 'user_info' obj.author.slug %}"><span class="badge bg-secondary">{{obj.author}}</span></a></p>
-            <p style="font-size: larger; font-weight: 400; color:rgb(14, 175, 9);">{{obj}}</p>
+            <p style="font-size: larger; font-weight: 400; color:rgba(176, 209, 28, 0.842);">{{obj}}</p>
             <hr>
             {% endfor %}
         </div>
         <div class="new ans">
-            <h5>Write a answer to this question</h5>
+            <h5 style="color:  rgba(255, 255, 255, 0.89)">Write a answer to this question</h5>
             <div>
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <textarea name="answer" id="" cols="30" rows="10">
+                    <textarea style="border-radius: 5px;" name="answer" id="" cols="50" rows="10">
                     </textarea>
                     <br>
                     {% if request.user.is_authenticated %}
                     <button type="submit" class="btn btn-success">Submit</button>
                     {% else %}
                     <button type="submit" class="btn btn-success" disabled>Submit</button>
-                    <small>You must login to answer any question.</small>
+                    <small style="color: rgb(177, 216, 37);">You must login to answer any question.</small>
                     {% endif %}
 
                 </form>

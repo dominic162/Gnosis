@@ -7,5 +7,6 @@ admin.site.register([
     models.doubts,
     models.solution,
     models.book,
-    models.contact
+    models.contact,
+    models.extra_info
     ])
