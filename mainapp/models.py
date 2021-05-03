@@ -63,3 +63,10 @@ class extra_info(models.Model):
 
     def __str__(self):
         return self.author.name
+
+class reviews( models.Model ):
+    name = models.CharField( max_length = 20 )
+    review = models.TextField()
+
+    def __str__(self):
+        return self.name

@@ -8,5 +8,6 @@ admin.site.register([
     models.solution,
     models.book,
     models.contact,
-    models.extra_info
+    models.extra_info,
+    models.reviews
     ])

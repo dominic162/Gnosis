@@ -47,3 +47,8 @@ class links_info( forms.ModelForm ):
     class Meta:
         model  = models.extra_info
         fields = '__all__'
+
+class review_form( forms.ModelForm ):
+    class Meta:
+        model  = models.reviews
+        fields = '__all__'

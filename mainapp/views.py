@@ -3,18 +3,51 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .forms import login_form , signup_form , ask_doubt , new_book , contact_form , links_info
-from .models import doubts, appuser, solution , book , extra_info
+from .forms import login_form , signup_form , ask_doubt , new_book , contact_form , links_info , review_form
+from .models import doubts, appuser, solution , book , extra_info , reviews
 from taggit.models import Tag
 from django.template.defaultfilters import slugify
-
-
+import requests
+from newsapi import NewsApiClient
 
 
 # Create your views here.
 
 def home(request):
-    context = {}
+    
+    newsapi = NewsApiClient(api_key ='cd5fe3c197fa4b2497e59b1a21fd2a45')
+    top = newsapi.get_top_headlines(sources ='techcrunch')
+  
+    l = top['articles']
+    news =[]
+    desc =[]
+    img =[]
+    f = l[0]
+    news.append(f['title'])
+    desc.append(f['description'])
+    img.append(f['urlToImage'])
+    fst = zip(news,desc,img)
+
+    news = []
+    desc = []
+    img = []
+
+    for i in range(1,5):
+        f = l[i]
+        news.append(f['title'])
+        desc.append(f['description'])
+        img.append(f['urlToImage'])
+    mylist  = zip(news, desc, img)
+
+    all_reviews = reviews.objects.all()
+
+    context = {
+        'fst'        : fst,
+        'allnews'    : mylist,
+        'allreviews' : all_reviews,
+    }
+
+
     return render(request, 'home.html', context)
 
 def auth_login(request):

@@ -1,50 +1,105 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title>
-        Gnosis
-    </title>
+<title>
+  Gnosis
+</title>
 {% endblock %}
 
+{% block link %}
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+{% endblock %}
 
 {% block style %}
-    <style>
-        body{
-            background-color: white;
-        }
+<style>
+ .carousel{
+   background-color: white;
+   border-radius: 20px;
+   margin-top: 20px;
+   box-shadow: aqua;
+ }
 
-        .features-section:before {
-    content: '';
-    position: absolute;
-    width: 10%;
-    height: 20em;
-    background: var(--primary-color);
-    left: 0;
-    top: -4em;
-  }
-  
+ .carousel h2{
+  text-align: center;
+  font-style: italic;
+  color: rgb(25, 33, 150);
+  margin-top: 50px;
+ }
 
-    </style>
+    .carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  font-weight: 500;
+  color: black;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  font-weight: 500;
+  color: black;
+}
+
+ .row{
+   margin: 50px 5px;
+ }
+
+
+
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-<div id="carouselExampleControls" class="carousel slide my-2" data-bs-ride="carousel">
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      </div>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+        aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+        aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+        aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"
+        aria-label="Slide 3"></button>
+    </div>
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg" alt="First slide">
+      {% for news,desc,img in fst %}
+      <div class="carousel-item active row">
+        <div class="row">
+          <div class="col-md-4 mx-2">
+            <h2 style="text-align: center;">{{news}}</h2>
+          </div>
+          <div class="col-md-6 mx-2">
+            <img src="{{img}}" class="img-fluid" alt="{{news}}">
+          </div>
+        </div>
       </div>
-      <div class="carousel-item">
-        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg" alt="Second slide">
+      {% endfor %}
+      {% for news,desc,img in allnews %}
+      <div class="carousel-item ">
+        <div class="row">
+          <div class="col-md-4 mx-2">
+            <h2>{{news}}</h2>
+          </div>
+          <div class="col-md-7 mx-2">
+            <img src="{{img}}" class="img-fluid" alt="{{news}}">
+          </div>
+        </div>
       </div>
-      <div class="carousel-item">
-        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg" alt="Third slide">
-      </div>
+      {% endfor %}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -55,42 +110,65 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
+
+  <div class="row rounded">
+    <div class="col-md-4 mx-2">
+      <img data-aos="fade-right" src="{% static 'images/home1.jpg' %}" class="img-fluid" alt="{{news}}">
+    </div>
+    <div data-aos="fade-left" class="col-md-7 mx-2">
+      <h2 style="color: rgb(255, 238, 80);">What's Gnosis?</h2>
+      <p style="color: azure;">Gnosis is the common Greek noun for knowledge . The term is used in various Hellenistic religions and philosophies. It is best known from Gnosticism. Therefore, Gnosis is a website that implies the motive of increasing the knowledge of the user in every domain. As a student we know the importance of knowledge and gainful material on the internet but what is everything is available in a single place and that too in a well-defined manner.</p>
+    </div>
+  </div>
+
+  <div class="row rounded">
+    <div data-aos="fade-left" class="col-md-7 mx-2">
+      <h2 style="color: coral;">Why Gnosis?</h2>
+      <p style="color: azure;">In today’s world there are enormous number of websites which are focused on the knowledge domain but are not compatible enough to cover the whole domain. As a student we know the importance of knowledge and gainful material on the internet but what is everything is available in a single place and that too in a well-defined manner. The interest for articles/books/blogs reading changes from person to person so we thought to cover every interest domain of user in a single frame with our website.</p>
+    </div>
+    <div class="col-md-4 mx-2">
+      <img data-aos="fade-right" src="{% static 'images/why1.jpg' %}" class="img-fluid" alt="{{news}}">
+    </div>
+  </div>
+
+  <h2 style="color: cornsilk; margin-left: 10px; font-style: oblique;">Valuable Reviews: </h2>
 </div>
 
+<marquee behavior="" direction="right">
+  {% for rvw in allreviews %}
+    <div  style=" display:inline-block; background-color: white; width: 400px; height: 200px; margin: 10px 10px; border-radius: 50px;">
+      <p style="margin: 10px 10px; font-size: larger; font-weight: 400; font-style: italic;" ><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="80"> {{rvw.name}}</p>
+      <p style="font-size: 20px; font-style: italic; margin-left: 10px;">{{rvw.review}}</p>
+    </div>
+  {% endfor %}
 
-<section class="features-section">
-    <div class="container">
-          <ul class="features-list">
-              <li>Unlimited Tasks</li>
-              <li>SMS Task Reminders</li>
-              <li>Confetti Explosions upon Task Completions</li>
-              <li>Social Media Announcements</li>
-              <li>Real Time Collaboration</li>
-              <li>Other awesome features</li>
-          </ul>
+</marquee>
 
-          <img src="holding-phone.jpg" alt="Man holding phone">
-      </div>
-  </section>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
 {% endblock %}
 
 {% block script %}
-    <script>
-        let act=document.getElementById('home');
-        act.classList.add('active');
-        const mobileBtn = document.getElementById('mobile-cta')
-              nav = document.querySelector('nav')
-              mobileBtnExit = document.getElementById('mobile-exit');
+<script>
+  let act = document.getElementById('home');
+  act.classList.add('active');
+  const mobileBtn = document.getElementById('mobile-cta')
+  nav = document.querySelector('nav')
+  mobileBtnExit = document.getElementById('mobile-exit');
 
-        mobileBtn.addEventListener('click', () => {
-            nav.classList.add('menu-btn');
-        })
+  mobileBtn.addEventListener('click', () => {
+    nav.classList.add('menu-btn');
+  })
 
-        mobileBtnExit.addEventListener('click', () => {
-            nav.classList.remove('menu-btn');
-        })
-        $('.carousel').carousel({
-  interval: 2000
-})
-    </script>
+  mobileBtnExit.addEventListener('click', () => {
+    nav.classList.remove('menu-btn');
+  })
+  $('.carousel').carousel({
+    interval: 2000
+  })
+</script>
 {% endblock %}
