@@ -44,17 +44,18 @@
 
     <div class="add-new">
         <h4 style="color: rgb(25, 180, 180); text-align: right;">Add new book
-            <i type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"  class="fas fa-plus-circle"></i>
+            <i type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="fas fa-plus-circle"></i>
         </h4>
     </div>
 
     {% if query %}
     <div class="random-books my-4" style="display:flex; justify-content: center; align-items: center;">
         <div>
+            {% if allpost %}
             <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Books based on {{query}}:
             </h1>
             <div class="row my-4">
-                
+        
                 {% for obj in allpost %}
 
                 <div class="card col-md-4 shadow-lg p-3 mb-5 bg-body"
@@ -80,12 +81,20 @@
 
                 {% endfor %}
             </div>
+            {% else %}
+                <div class="card bg-white">
+                    <p>
+                    <img src="{% static 'images/oops.jpg' %}" alt="oops" style="height: 300px; margin-right: 10px;" >
+                    <span style="font-size: x-large; font-style: italic; font-family: 'Times New Roman', Times, serif;" >No books based on {{query}}.</span>
+                </div>
+            </p>
+            {% endif %}
         </div>
     </div>
     {% endif %}
     <div class="random-books my-4" style="display:flex; justify-content: center; align-items: center;">
         <div>
-            <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Random Books </h1>
+            <h1 style="color: rgb(162, 208, 209); text-align: center; font-style: italic;">Featured Books </h1>
             <div class="row my-4">
                 {% for obj in object %}
 
@@ -155,10 +164,10 @@
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="tags" placeholder="Tags" name="tags">
-                        <label for="pages">Tags</label>
+                        <label for="tags">Tags</label>
                     </div>
                     {% if request.user.is_authenticated %}
-                        <button type="submit" name="add_book" class="btn btn-success">ADD</button>
+                    <button type="submit" name="add_book" class="btn btn-success">ADD</button>
                     {% else %}
                     <button type="submit" name="add_book" class="btn btn-success" disabled>ADD</button>
                     <small>You must <a href="{% url 'login' %}"> login </a> to add book.</small>
@@ -166,10 +175,8 @@
                 </form>
             </div>
         </div>
-        <div class="modal-footer">
-        </div>
+        
     </div>
-</div>
 </div>
 {% endblock %}
 

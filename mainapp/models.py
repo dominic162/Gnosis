@@ -53,7 +53,7 @@ class contact(models.Model):
         return self.name
 
 class extra_info(models.Model):
-    bio         = models.CharField( max_length  = 100 )
+    bio         = models.CharField( blank = True , max_length  = 100 )
     site_link   = models.URLField(  blank       = True )
     gthb_link   = models.URLField(  blank       = True )
     twtr_link   = models.URLField(  blank       = True )

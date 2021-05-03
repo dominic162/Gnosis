@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .forms import login_form , signup_form , ask_doubt , new_book , contact_form
-from .models import doubts, appuser, solution , book 
+from .forms import login_form , signup_form , ask_doubt , new_book , contact_form , links_info
+from .models import doubts, appuser, solution , book , extra_info
 from taggit.models import Tag
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
@@ -170,9 +170,40 @@ def all_books(request):
     return render(request, 'all_books.html', context)
 
 def user_info(request , slug):
+    
     context = {
         'object' : appuser.objects.get(slug = slug)
     }
+    if request.method == "POST":
+        request.POST = request.POST.copy()
+        
+        cuser = appuser.objects.get( username = request.user.username )
+        cinst = extra_info.objects.filter( author = cuser )
+        if cinst:
+            cinst = extra_info.objects.get( author = cuser )
+            if request.POST['bio']:
+                cinst.bio = request.POST['bio']
+            if request.POST['site_link']:
+                cinst.site_link = request.POST['site_link']
+            if request.POST['gthb_link']:
+                cinst.gthb_link = request.POST['gthb_link']
+            if request.POST['twtr_link']:
+                cinst.twtr_link = request.POST['twtr_link']
+            if request.POST['inst_link']:
+                cinst.inst_link = request.POST['inst_link']
+            if request.POST['fb_link']:
+                cinst.fb_link = request.POST['fb_link']
+            
+            cinst.save()
+            
+        else:
+            request.POST['author'] = cuser
+            cinst = links_info(request.POST)
+            if cinst.is_valid():
+                cinst.save()
+                context['success'] = 'Successfully updated'
+            else:
+                context['error'] = 'Enter all fields correctly'
     return render(request , 'user.html', context)
 
 

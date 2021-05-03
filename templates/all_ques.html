@@ -200,6 +200,7 @@
                 <div class="card card-body">
                     {% if request.user.is_authenticated %}
                     <ul class="list-group">
+                        {% if cuser %}
                         {% for obj in cuser %}
                         <li class="list-group-item" style="color: black; font-size: large;">
                             <p class="que">
@@ -223,6 +224,9 @@
                             
                         </li>
                         {% endfor %}
+                        {% else %}
+                            <li class="list-group-item" style="font-size: large; font-weight: 500; color: black;">No doubts asked by you </li>
+                        {% endif %}
                     </ul>
                     {% else %}
                     <p>
