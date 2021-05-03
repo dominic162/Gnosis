@@ -1,13 +1,96 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
     <title>
         Gnosis
     </title>
 {% endblock %}
 
+
+{% block style %}
+    <style>
+        body{
+            background-color: white;
+        }
+
+        .features-section:before {
+    content: '';
+    position: absolute;
+    width: 10%;
+    height: 20em;
+    background: var(--primary-color);
+    left: 0;
+    top: -4em;
+  }
+  
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div id="carouselExampleControls" class="carousel slide my-2" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg" alt="First slide">
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg" alt="Second slide">
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg" alt="Third slide">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+
+<section class="features-section">
+    <div class="container">
+          <ul class="features-list">
+              <li>Unlimited Tasks</li>
+              <li>SMS Task Reminders</li>
+              <li>Confetti Explosions upon Task Completions</li>
+              <li>Social Media Announcements</li>
+              <li>Real Time Collaboration</li>
+              <li>Other awesome features</li>
+          </ul>
+
+          <img src="holding-phone.jpg" alt="Man holding phone">
+      </div>
+  </section>
+{% endblock %}
+
 {% block script %}
     <script>
         let act=document.getElementById('home');
         act.classList.add('active');
+        const mobileBtn = document.getElementById('mobile-cta')
+              nav = document.querySelector('nav')
+              mobileBtnExit = document.getElementById('mobile-exit');
+
+        mobileBtn.addEventListener('click', () => {
+            nav.classList.add('menu-btn');
+        })
+
+        mobileBtnExit.addEventListener('click', () => {
+            nav.classList.remove('menu-btn');
+        })
+        $('.carousel').carousel({
+  interval: 2000
+})
     </script>
 {% endblock %}
