@@ -1,14 +1,13 @@
-import os
+
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .forms import login_form , signup_form , ask_doubt , new_book , contact_form , links_info
 from .models import doubts, appuser, solution , book , extra_info
 from taggit.models import Tag
 from django.template.defaultfilters import slugify
-from django.contrib.auth.decorators import login_required
-from reportlab.pdfgen import canvas
+
 
 
 
@@ -195,6 +194,7 @@ def user_info(request , slug):
                 cinst.fb_link = request.POST['fb_link']
             
             cinst.save()
+            context['success'] = "'Successfully updated'"
             
         else:
             request.POST['author'] = cuser
