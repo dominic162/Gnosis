@@ -47,6 +47,13 @@ def home(request):
         'allreviews' : all_reviews,
     }
 
+    if request.method == "POST":
+        form = review_form(request.POST)
+        if form.is_valid():
+            form.save()
+            context['success'] = 'Review submitted successfully'
+        else:
+            context['error'] = 'Enter all field correctly'
 
     return render(request, 'home.html', context)
 

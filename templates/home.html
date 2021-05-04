@@ -55,6 +55,10 @@
    margin: 50px 5px;
  }
 
+ form{
+    font-weight: 600;
+    font-size: 17px;
+  }
 
 
 </style>
@@ -132,6 +136,7 @@
   </div>
 
   <h2 style="color: cornsilk; margin-left: 10px; font-style: oblique;">Valuable Reviews: </h2>
+
 </div>
 
 <marquee behavior="" direction="right">
@@ -143,6 +148,44 @@
   {% endfor %}
 
 </marquee>
+
+<div class="container">
+
+  <div class="row" style="color: rgb(176, 238, 82);">
+    <div class="col-md-6 my-3">
+      <h5>Submit your review:</h5>
+      <div class="my-3" style="margin-right: 20px;">
+
+        <div>
+
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name">
+              <label for="floatingInput">Name</label>
+            </div>
+            <div class="form-floating">
+              <input type="text" class="form-control" id="review" placeholder="Review" name="review">
+              <label for="review">Your review</label>
+            </div>
+            <button type="submit" class="my-2 btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 my-3 mx-4">
+      <h5>Terms and conditions:</h5>
+      <ul>
+        <li>By using this site you are accepting all the terms and condition of <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;"><a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a></a> .</li>
+        <li>You are responsible for any activity that occurs under your screen name.</li>
+        <li>You are responsible for keeping your password secure.</li>
+        <li>Violation of any of these agreements will result in the termination of your <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a> account. While <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a> prohibits such conduct and content on its site, you understand and agree that <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a> cannot be responsible for the Content posted on its web site and you nonetheless may be exposed to such materials and that you use the <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a> service at your own risk.</li>
+        <li>We reserve the right to modify or terminate the <a href="{% url 'home' %}" style="color: inherit; text-decoration:underline ;">Gnosis</a> service for any reason, without notice at any time.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
 
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
