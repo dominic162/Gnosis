@@ -19,25 +19,29 @@ def home(request):
     top = newsapi.get_top_headlines(sources ='techcrunch')
   
     l = top['articles']
-    news =[]
-    desc =[]
-    img =[]
+    news = []
+    desc = []
+    img  = []
+    url  = []
     f = l[0]
     news.append(f['title'])
     desc.append(f['description'])
     img.append(f['urlToImage'])
-    fst = zip(news,desc,img)
+    url.append(f['url'])
+    fst = zip(news,desc,img,url)
 
     news = []
     desc = []
-    img = []
+    img  = []
+    url  = []
 
     for i in range(1,5):
         f = l[i]
         news.append(f['title'])
         desc.append(f['description'])
         img.append(f['urlToImage'])
-    mylist  = zip(news, desc, img)
+        url.append(f['url'])
+    mylist  = zip(news, desc, img , url)
 
     all_reviews = reviews.objects.all()
 
